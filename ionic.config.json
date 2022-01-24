@@ -1,0 +1,7 @@
+{
+  "name": "CompraVentasProducts",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
