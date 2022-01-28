@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuController } from '@ionic/angular';
+import { FirebaseAuthService } from './services/firebase-auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,5 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private firebaseAuthService: FirebaseAuthService) {}
 }
