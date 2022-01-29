@@ -65,7 +65,7 @@ export class CarritoService {
   }
 
 getCarrito(){
-
+return this.pedido;
 }
 
   addProductos(producto: Producto){
@@ -85,6 +85,7 @@ getCarrito(){
         }
     }else{
         this.route.navigate(['/perfil']);
+        return;
     }
     console.log('en add pedido => ', this.pedido);
     const path ='Clientes/'+''+this.uid+'/'+'carrito';

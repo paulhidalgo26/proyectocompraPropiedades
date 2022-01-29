@@ -1,3 +1,32 @@
-<p>
-  carrito works!
-</p>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="subtitle" style="text-align: center;">
+        COMPRA VENTA PRODUCTOS 
+    </ion-title>
+
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <ion-icon color="primary" slot="icon-only" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      
+      <ion-button  [routerLink]="['/']"> 
+        <ion-icon color="primary" slot="icon-only" name="storefront-outline"></ion-icon>
+      </ion-button>
+      <ion-button  [routerLink]="['/perfil']"> 
+        <ion-icon color="primary" slot="icon-only" name="person-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngFor="let producto of pedido.productos">
+    <app-itemcarrito [productoPedido]='producto'></app-itemcarrito>
+  </div>
+</ion-content>
