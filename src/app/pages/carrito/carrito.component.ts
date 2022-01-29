@@ -15,7 +15,10 @@ export class CarritoComponent implements OnInit {
   constructor(public menucontroler: MenuController,
     public fireStoreService: FireStoreService,
     public carritoService: CarritoService) {
-       this.loadPedido();
+
+      this.initCarrito();
+       this.loadPedidos();
+       console.log('funciona');
      }
 
   ngOnInit() {}
@@ -24,7 +27,21 @@ export class CarritoComponent implements OnInit {
     console.log('open menu');
     this.menucontroler.toggle('principal');
   }
-  loadPedido(){
-     this.pedido= this.carritoService.getCarrito();
+  loadPedidos(){
+  this.carritoService.getCarrito().subscribe(res=>{
+    console.log(res,'respuesta');
+    this.pedido=res;
+  });
+  }
+  initCarrito(){
+    this.pedido={
+      id: '',
+      cliente: null,
+      productos: [],
+      precioTotal: null,
+      estado: 'enviado',
+      fecha: new Date(),
+      valoracion: null,
+    };
   }
 }

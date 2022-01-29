@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import { Cliente, Pedido, Producto, ProductoPedido } from '../models';
 import { FireStoreService } from './fire-store.service';
 import { FirebaseAuthService } from './firebase-auth.service';
@@ -16,6 +17,8 @@ export class CarritoService {
  uid='';
  // eslint-disable-next-line @typescript-eslint/member-ordering
  cliente: Cliente;
+ // eslint-disable-next-line @typescript-eslint/member-ordering
+ pedido$ = new Subject<Pedido>();
 
   constructor(public firebaseAuthService: FirebaseAuthService,
               public fireStoreService: FireStoreService,
@@ -31,12 +34,13 @@ export class CarritoService {
    }
 
   loadCarrito(){
-    const path ='Clientes/'+''+this.uid+'/'+'carrito';
-
+    const path ='Clientes/'+this.uid+'/'+'carrito';
   this.fireStoreService.getDoc<Pedido>(path,this.uid).subscribe(res=>{
     console.log(res);
     if (res) {
       this.pedido=res;
+      console.log(this.pedido);
+      this.pedido$.next(this.pedido);
     }else{
       this.initCarrito();
     }
@@ -54,6 +58,7 @@ export class CarritoService {
       fecha: new Date(),
       valoracion: null,
     };
+    this.pedido$.next(this.pedido);
   }
 
   loadCliente(){
@@ -64,8 +69,13 @@ export class CarritoService {
     });
   }
 
-getCarrito(){
-return this.pedido;
+getCarrito(): Observable<Pedido>{
+  setTimeout(()=>{
+    this.pedido$.next(this.pedido);
+  },10);
+ return this.pedido$.asObservable();
+
+
 }
 
   addProductos(producto: Producto){
@@ -88,14 +98,31 @@ return this.pedido;
         return;
     }
     console.log('en add pedido => ', this.pedido);
-    const path ='Clientes/'+''+this.uid+'/'+'carrito';
+    const path ='Clientes/'+this.uid+'/'+'carrito';
     this.fireStoreService.createDoc(this.pedido,path,this.uid).then(()=>{
         console.log('añdido con exito');
     });
   }
 
-  removePRoducto(producto: Producto){
-
+  removeProducto(producto: Producto){
+    if (this.uid.length) {
+      let pocision=0;
+      const item= this.pedido.productos.find((productoPedido , index)=>{
+          pocision=index;
+          return(productoPedido.producto.id===producto.id);
+      });
+      if (item !==undefined) {
+        item.cantidad --;
+        if (item.cantidad===0) {
+          this.pedido.productos.splice(pocision, 1);
+        }
+        console.log('app remove pedido ',this.pedido);
+        const path='Clientes/' + this.uid +'/'+this.path;
+        this.fireStoreService.createDoc(this.pedido,path,this.uid).then(()=>{
+          console.log('removido  con exito');
+        });
+      }
+  }
   }
 
   realizarPedido(){

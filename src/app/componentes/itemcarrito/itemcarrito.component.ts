@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CarritoService } from 'src/app/services/carrito.service';
 import {ProductoPedido} from '../../models';
 
 @Component({
@@ -11,8 +12,14 @@ export class ItemcarritoComponent implements OnInit {
 @Input() productoPedido: ProductoPedido;
 
 
-  constructor() { }
+  constructor(public carritoService: CarritoService) { }
 
   ngOnInit() {}
 
+  addCarrito(){
+    this.carritoService.addProductos(this.productoPedido.producto);
+  }
+  removeCarrito(){
+    this.carritoService.removeProducto(this.productoPedido.producto);
+  }
 }
