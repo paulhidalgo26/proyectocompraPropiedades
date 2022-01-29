@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { async } from 'rxjs';
+import { async, Subject } from 'rxjs';
+import { Cliente } from '../models';
+import { CarritoService } from './carrito.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseAuthService {
 
-  constructor(public auth: AngularFireAuth) {
+
+
+  constructor(public auth: AngularFireAuth,
+             ) {
     this.getUid();
    }
 
@@ -15,6 +20,7 @@ export class FirebaseAuthService {
     return this.auth.signInWithEmailAndPassword(email,password);
   }
   logout() {
+    this.stateAuth();
    return this.auth.signOut();
   }
   registrar(email: string, password: string){
@@ -27,6 +33,7 @@ export class FirebaseAuthService {
       return null;
     }else{
       return user.uid;
+
     }
   }
   stateAuth(){

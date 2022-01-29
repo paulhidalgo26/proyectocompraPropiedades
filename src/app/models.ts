@@ -21,9 +21,9 @@ export interface Pedido{
     id: string;
     cliente: Cliente;
     productos: ProductoPedido[];
-    precioTotal: string;
+    precioTotal: number;
     estado: string;
-    fecha: Date;
+    fecha: any;
     valoracion: number;
 }
 export interface ProductoPedido{

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Subscriber, Subscription } from 'rxjs';
 import { Cliente } from 'src/app/models';
+import { CarritoService } from 'src/app/services/carrito.service';
 import { FireStorageService } from 'src/app/services/fire-storage.service';
 import { FireStoreService } from 'src/app/services/fire-store.service';
 import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
@@ -34,7 +35,8 @@ export class PerfilComponent implements OnInit {
   constructor(public menucontroler: MenuController,
     public firebaseAuthService: FirebaseAuthService,
     public fireStoreService: FireStoreService,
-    public fireStorageService: FireStorageService) {
+    public fireStorageService: FireStorageService,
+    public carritoService: CarritoService) {
 
       this.firebaseAuthService.stateAuth().subscribe(res=>{
         if (res !== null) {
@@ -123,8 +125,10 @@ export class PerfilComponent implements OnInit {
   }
 
   async salir(){
-    this.firebaseAuthService.logout();
-     this.suscriberUserInfo.unsubscribe();
+
+      this.firebaseAuthService.logout();
+      this.suscriberUserInfo.unsubscribe();
+    ;
   }
 
   getuserUid(uid: string){

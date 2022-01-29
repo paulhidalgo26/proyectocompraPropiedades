@@ -14,11 +14,12 @@
                        
           <p class="normal normal m-3" >Precio: {{productoPedido.producto.precioReducido}}</p>
           <p class="normal normal m-3">Cantidad: {{productoPedido.cantidad}}</p>        
+          <p *ngIf="!botones" class="normal normal m-3">Total: {{productoPedido.cantidad*productoPedido.producto.precioReducido}}</p>        
       </div>           
       </ion-col>
     </ion-row>    
           
-            <div>
+            <div *ngIf="botones">
               <ion-button color="secondary"(click)="addCarrito()">
                 <ion-icon slot="icon-only" name="add" ></ion-icon>
               </ion-button>

@@ -30,3 +30,24 @@
     <app-itemcarrito [productoPedido]='producto'></app-itemcarrito>
   </div>
 </ion-content>
+
+<ion-footer>
+
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="normal text-center" size="6" style="border-right: 1px solid silver;">
+        Cantidad: {{cantidad}}
+      </ion-col>
+      <ion-col class="normal text-center"size="6">
+        Total:{{total}}$
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="pedir()" expand="full" class="normal" style="color: white !important;">
+          Pedir
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </ion-footer>

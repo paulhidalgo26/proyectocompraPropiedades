@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Cliente, Pedido, Producto, ProductoPedido } from '../models';
 import { FireStoreService } from './fire-store.service';
 import { FirebaseAuthService } from './firebase-auth.service';
@@ -19,27 +19,37 @@ export class CarritoService {
  cliente: Cliente;
  // eslint-disable-next-line @typescript-eslint/member-ordering
  pedido$ = new Subject<Pedido>();
+ // eslint-disable-next-line @typescript-eslint/member-ordering
+ cariitosuscriber: Subscription;
+ // eslint-disable-next-line @typescript-eslint/member-ordering
+ clientesuscriber: Subscription;
 
   constructor(public firebaseAuthService: FirebaseAuthService,
               public fireStoreService: FireStoreService,
               public route: Router) {
+                this.initCarrito();
+                this.verificar();
+   }
 
-    this.firebaseAuthService.stateAuth().subscribe(res=>{
+
+   verificar(){
+   this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
       console.log(res);
       if (res !== null) {
         this.uid=res.uid;
         this.loadCliente();
+      }else{
+       this.cariitosuscriber.unsubscribe();
       }
     });
    }
 
   loadCarrito(){
     const path ='Clientes/'+this.uid+'/'+'carrito';
-  this.fireStoreService.getDoc<Pedido>(path,this.uid).subscribe(res=>{
-    console.log(res);
+ this.cariitosuscriber= this.fireStoreService.getDoc<Pedido>(path,this.uid).subscribe(res=>{
     if (res) {
       this.pedido=res;
-      console.log(this.pedido);
+
       this.pedido$.next(this.pedido);
     }else{
       this.initCarrito();
@@ -61,6 +71,7 @@ export class CarritoService {
     this.pedido$.next(this.pedido);
   }
 
+
   loadCliente(){
     const path='Clientes';
     this.fireStoreService.getDoc<Cliente>(path,this.uid).subscribe(res=>{
@@ -72,7 +83,7 @@ export class CarritoService {
 getCarrito(): Observable<Pedido>{
   setTimeout(()=>{
     this.pedido$.next(this.pedido);
-  },10);
+  },100);
  return this.pedido$.asObservable();
 
 
@@ -97,6 +108,7 @@ getCarrito(): Observable<Pedido>{
         this.route.navigate(['/perfil']);
         return;
     }
+    this.pedido$.next(this.pedido);
     console.log('en add pedido => ', this.pedido);
     const path ='Clientes/'+this.uid+'/'+'carrito';
     this.fireStoreService.createDoc(this.pedido,path,this.uid).then(()=>{
@@ -130,6 +142,10 @@ getCarrito(): Observable<Pedido>{
   }
 
   clearCarrito(){
+    const path='Clientes/' + this.uid +'/'+'carrito';
+    this.fireStoreService.deleteDoc(path,this.uid).then(()=>{
+      //this.initCarrito();
+    });
 
   }
 

@@ -10,6 +10,7 @@ import {ProductoPedido} from '../../models';
 export class ItemcarritoComponent implements OnInit {
 
 @Input() productoPedido: ProductoPedido;
+@Input() botones=true;
 
 
   constructor(public carritoService: CarritoService) { }
