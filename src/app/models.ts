@@ -1,3 +1,4 @@
+
 export interface Producto{
     nombre: string;
     precioNormal: number;
@@ -15,3 +16,18 @@ export interface Cliente{
     referencia: string;
     ubicacion: any;
 }
+
+export interface Pedido{
+    id: string;
+    cliente: Cliente;
+    productos: ProductoPedido[];
+    precioTotal: string;
+    estado: string;
+    fecha: string;
+    valoracion: number;
+}
+export interface ProductoPedido{
+    producto: Producto;
+    catidad: number;
+}
+export type EstadoPedido='enviado'|'visto'|'camino'|'entregado';

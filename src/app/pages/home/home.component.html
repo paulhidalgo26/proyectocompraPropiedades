@@ -11,10 +11,10 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button routerLink="['/carrito']"  >
+     
+      <ion-button  [routerLink]="['/carrito']"> 
         <ion-icon color="primary" slot="icon-only" name="cart-outline"></ion-icon>
       </ion-button>
-     
       <ion-button  [routerLink]="['/perfil']"> 
         <ion-icon color="primary" slot="icon-only" name="person-circle"></ion-icon>
       </ion-button>
@@ -23,3 +23,15 @@
 
   </ion-toolbar>
 </ion-header>
+
+<ion-content>
+
+  <div *ngFor="let producto of productos">
+    <app-producto  [producto]=producto>  
+    </app-producto>
+
+  </div>
+
+
+
+</ion-content>

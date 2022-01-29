@@ -10,6 +10,21 @@
         </ion-toolbar>
       </ion-header>
 <ion-content>
+
+  <ion-menu-toggle autoHide=false>
+    <ion-item Button=true detail=true [routerLink]="['/']">
+     <ion-label class="normal">Tienda</ion-label>
+     <ion-icon slot="start" name="create"></ion-icon>
+    </ion-item>
+  </ion-menu-toggle>
+
+  <ion-menu-toggle autoHide=false>
+    <ion-item Button=true detail=true [routerLink]="['/carrito']">
+     <ion-label class="normal">Carrito</ion-label>
+     <ion-icon slot="start" name="cart-outline"></ion-icon>
+    </ion-item>
+  </ion-menu-toggle>
+
   <ion-menu-toggle autoHide=false>
     <ion-item Button=true detail=true [routerLink]="['/set-productos']">
      <ion-label class="normal">Configuracion de productos</ion-label>

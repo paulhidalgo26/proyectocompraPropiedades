@@ -1,0 +1,12 @@
+<ion-card style="position: relative;">
+  <ion-img class="center" [src]="producto.foto"></ion-img>
+ 
+<ion-label class="subtitulo">{{producto.nombre}}</ion-label>
+  <hr>
+  <p class="tachado">{{producto.precioNormal}}$ </p>
+  <p class="precio">{{producto.precioReducido}}$ </p>
+  
+    <button>
+      <ion-icon  class="icon-producto"name="cart-sharp"></ion-icon>
+    </button>
+</ion-card>
