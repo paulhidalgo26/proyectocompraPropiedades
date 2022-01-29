@@ -20,7 +20,6 @@ export class FireStoreService {
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   getDoc<tipo>(path: string,id: string){
-    console.log(id,'getdoc');
     const collection=this.database.collection<tipo>(path);
     return collection.doc(id).valueChanges();
   }

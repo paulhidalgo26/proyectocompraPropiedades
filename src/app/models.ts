@@ -23,11 +23,11 @@ export interface Pedido{
     productos: ProductoPedido[];
     precioTotal: string;
     estado: string;
-    fecha: string;
+    fecha: Date;
     valoracion: number;
 }
 export interface ProductoPedido{
     producto: Producto;
-    catidad: number;
+    cantidad: number;
 }
 export type EstadoPedido='enviado'|'visto'|'camino'|'entregado';
