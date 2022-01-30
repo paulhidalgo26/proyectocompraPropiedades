@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Pedido } from 'src/app/models';
 import { FireStoreService } from 'src/app/services/fire-store.service';
 import {CarritoService} from 'src/app/services/carrito.service';
 import { Subscription } from 'rxjs';
 import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
+import {  Router } from '@angular/router';
 
 @Component({
   selector: 'app-carrito',
@@ -18,10 +19,13 @@ export class CarritoComponent implements OnInit,OnDestroy {
   total: number;
   cantidad: number;
 
+
+
   constructor(public menucontroler: MenuController,
     public fireStoreService: FireStoreService,
     public carritoService: CarritoService,
-    public firebaseAuthService: FirebaseAuthService) {
+    public firebaseAuthService: FirebaseAuthService,
+    public route: Router) {
 
       this.initCarrito();
        this.loadPedidos();
@@ -87,5 +91,6 @@ ngOnDestroy() {
         console.log('guardado con exito');
         this.carritoService.clearCarrito();
     });
+    this.route.navigate(['/mis-pedidos']);
 }
 }

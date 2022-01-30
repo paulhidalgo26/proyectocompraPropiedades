@@ -17,10 +17,11 @@ export class MispedidosComponent implements OnInit ,OnDestroy{
   entrgadosSuscriber: Subscription;
   pedidos: Pedido[]=[];
 
+
   constructor(public menucontroler: MenuController,
     public fireStoreService: FireStoreService,
     public carritoService: CarritoService,
-    public firebaseAuthService: FirebaseAuthService) {
+    public firebaseAuthService: FirebaseAuthService,) {
 
 
     }
