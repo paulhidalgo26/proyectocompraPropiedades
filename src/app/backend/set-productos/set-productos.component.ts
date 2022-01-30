@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, MenuController, ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Producto } from 'src/app/models';
 import { FireStorageService } from 'src/app/services/fire-storage.service';
 
 
 import { FireStoreService } from 'src/app/services/fire-store.service';
+import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
 
 
 @Component({
@@ -23,16 +25,31 @@ export class SetProductosComponent implements OnInit {
   enableNewProducto= false;
   editar=false;
   private path= 'Productos/';
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  clientesuscriber: Subscription;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  uid='';
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  productosuscribe: Subscription;
 
   constructor(public menucontrol: MenuController,
               public toastController: ToastController,
               public alertController: AlertController,
               public fireStoreService: FireStoreService,
               public fireStorageService: FireStorageService,
-              public loadingController: LoadingController,) { }
+              public loadingController: LoadingController,
+              public firebaseAuthService: FirebaseAuthService) {
+                this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
+                  console.log(res);
+                  if (res !== null) {
+                    this.uid=res.uid;
+                    this.getProductosCliente();
+                  }
+                });
+              }
 
   ngOnInit() {
-    this.getProductos();
+    this.getProductosCliente();
   }
 
   openMenu(){
@@ -77,6 +94,18 @@ export class SetProductosComponent implements OnInit {
     });
   }
 
+
+   getProductosCliente(){
+    console.log('productos del cliente');
+      this.productosuscribe=this.fireStoreService.getCollectionQueryProductos<Producto>(this.path,'idc','==',this.uid).subscribe(res=>{
+        console.log(this.uid);
+          if (res.length) {
+            this.productos=res;
+          }
+      });
+    }
+
+
   async deleteProducto(producto: Producto){
 
     const alert = await this.alertController.create({
@@ -116,6 +145,7 @@ nuevo(){
     precioReducido: null,
     foto: '',
     id: this.fireStoreService.getId(),
+    idc: this.uid,
     fecha: new Date(),
   };
 }

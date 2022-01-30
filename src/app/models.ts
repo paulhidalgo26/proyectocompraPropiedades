@@ -5,6 +5,7 @@ export interface Producto{
     precioReducido: number;
     foto: string;
     id: string;
+    idc: string;
     fecha: Date;
 }
 export interface Cliente{
