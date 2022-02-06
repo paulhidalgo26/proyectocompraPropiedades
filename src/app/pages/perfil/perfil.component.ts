@@ -38,7 +38,7 @@ export class PerfilComponent implements OnInit {
     public fireStorageService: FireStorageService,
     public carritoService: CarritoService) {
 
-      this.firebaseAuthService.stateAuth().subscribe(res=>{
+       this.firebaseAuthService.stateAuth().subscribe(res=>{
         if (res !== null) {
           this.uid=res.uid;
            this.getuserUid(this.uid);
@@ -50,8 +50,8 @@ export class PerfilComponent implements OnInit {
 
   async ngOnInit() {
 
-    const id=await this.firebaseAuthService.getUid();
-    console.log(id);
+   // const id=await this.firebaseAuthService.getUid();
+    //console.log(id);
 
   }
 
@@ -124,11 +124,12 @@ export class PerfilComponent implements OnInit {
   });
   }
 
-  async salir(){
+  salir(){
 
-      this.firebaseAuthService.logout();
+      this.firebaseAuthService.logout().then(res=>{
+        console.log(res);
+      });
       this.suscriberUserInfo.unsubscribe();
-    ;
   }
 
   getuserUid(uid: string){
@@ -145,6 +146,7 @@ export class PerfilComponent implements OnInit {
     };
     this.firebaseAuthService.login(credenciales.email,credenciales.password).then(res=>{
       console.log('ingreso con exito');
+      this.carritoService.verificar();
     });
   }
 

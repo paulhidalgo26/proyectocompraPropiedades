@@ -59,4 +59,11 @@ export class FireStoreService {
         return collection.valueChanges();
         }
 
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        getCollectionAlll<tipo>(path: string,parametro: string,condicion: any,busqueda: string){
+          const collection=this.database.collectionGroup<tipo>(path,
+            ref=>ref.where(parametro,condicion,busqueda));
+          return collection.valueChanges();
+          }
+
 }

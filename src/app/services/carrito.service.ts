@@ -39,7 +39,8 @@ export class CarritoService {
         this.uid=res.uid;
         this.loadCliente();
       }else{
-       this.cariitosuscriber.unsubscribe();
+       //this.cariitosuscriber.unsubscribe();
+       this.clientesuscriber.unsubscribe();
       }
     });
    }
@@ -90,6 +91,8 @@ getCarrito(): Observable<Pedido>{
 }
 
   addProductos(producto: Producto){
+    setTimeout(()=>{
+    },100);
     if (this.uid.length) {
         // eslint-disable-next-line arrow-body-style
        const item= this.pedido.productos.find(productoPedido=>{
@@ -148,5 +151,7 @@ getCarrito(): Observable<Pedido>{
     });
 
   }
+
+
 
 }

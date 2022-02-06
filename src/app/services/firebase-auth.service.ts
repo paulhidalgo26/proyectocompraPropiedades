@@ -21,6 +21,7 @@ export class FirebaseAuthService {
   }
   logout() {
     this.stateAuth();
+    this.auth.signOut();
    return this.auth.signOut();
   }
   registrar(email: string, password: string){

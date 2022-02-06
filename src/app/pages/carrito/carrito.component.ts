@@ -16,6 +16,7 @@ export class CarritoComponent implements OnInit,OnDestroy {
 
   pedido: Pedido;
   cariitosuscriber: Subscription;
+  clientesuscriber: Subscription;
   total: number;
   cantidad: number;
 
@@ -28,9 +29,15 @@ export class CarritoComponent implements OnInit,OnDestroy {
     public route: Router) {
 
       this.initCarrito();
-       this.loadPedidos();
-       ;
-     }
+      this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
+        console.log(res);
+
+        if (res !== null) {
+          this.loadPedidos();
+        }
+      });
+  }
+
 ngOnDestroy() {
   console.log('carrito componecte destroy');
   if (this.cariitosuscriber) {

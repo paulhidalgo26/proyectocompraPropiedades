@@ -30,7 +30,11 @@ export class SetProductosComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   uid='';
   // eslint-disable-next-line @typescript-eslint/member-ordering
+  uidadmin='';
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   productosuscribe: Subscription;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  admin=false;
 
   constructor(public menucontrol: MenuController,
               public toastController: ToastController,
@@ -42,14 +46,21 @@ export class SetProductosComponent implements OnInit {
                 this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
                   console.log(res);
                   if (res !== null) {
-                    this.uid=res.uid;
-                    this.getProductosCliente();
+                    if (res.uid==='phTnOHMce5TCgF662tXyLK3EPp52') {
+                      console.log(this.uid);
+                        this.admin=true;
+                        this.uidadmin=res.uid;
+                        this.getProductos();
+                    }else{
+                      this.uid=res.uid;
+                      this.getProductosCliente();
+                    }
                   }
                 });
               }
 
   ngOnInit() {
-    this.getProductosCliente();
+  //  this.getProductosCliente();
   }
 
   openMenu(){
@@ -88,10 +99,10 @@ export class SetProductosComponent implements OnInit {
   }
 
   getProductos(){
-    this.fireStoreService.getColleccion<Producto>(this.path).subscribe(res=>{
-      console.log(res);
-     this.productos=res;
-    });
+      this.fireStoreService.getColleccion<Producto>(this.path).subscribe(res=>{
+        console.log(res);
+       this.productos=res;
+      });
   }
 
 
@@ -104,6 +115,7 @@ export class SetProductosComponent implements OnInit {
           }
       });
     }
+
 
 
   async deleteProducto(producto: Producto){
