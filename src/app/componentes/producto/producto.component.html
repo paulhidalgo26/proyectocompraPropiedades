@@ -7,6 +7,6 @@
   <p class="precio">{{producto.precioReducido}}$ </p>
   
     <button>
-      <ion-icon (click)="addCarrito()" class="icon-producto"name="cart-sharp"></ion-icon>
+      <ion-icon (click)="addCarrito();ngOnDestroy()" class="icon-producto"name="cart-sharp"></ion-icon>
     </button>
 </ion-card>

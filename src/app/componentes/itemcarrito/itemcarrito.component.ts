@@ -17,9 +17,9 @@ export class ItemcarritoComponent implements OnInit {
 
   ngOnInit() {}
 
-  addCarrito(){
-    this.carritoService.addProductos(this.productoPedido.producto);
-  }
+  // addCarrito(){
+  //   this.carritoService.addProductos(this.productoPedido.producto);
+  // }
   removeCarrito(){
     this.carritoService.removeProducto(this.productoPedido.producto);
   }

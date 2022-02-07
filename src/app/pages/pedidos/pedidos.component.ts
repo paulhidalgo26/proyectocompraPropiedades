@@ -40,9 +40,15 @@ export class PedidosComponent implements OnInit {
   async getPedidosNuevos(){
     console.log('Nuevos');
       const path='pedidos';
-      this.nuevosSuscriber=this.fireStoreService.getCollectionAlll<Pedido>(path,'estado','==','enviado').subscribe(res=>{
+      let startAt=null;
+      if (this.pedidos.length) {
+        startAt=this.pedidos[this.pedidos.length -1].fecha;
+      }
+      this.nuevosSuscriber=this.fireStoreService.getCollectionAlll<Pedido>(path,'estado','==','enviado',startAt).subscribe(res=>{
           if (res.length) {
-            this.pedidos=res;
+            res.forEach(pedido=>{
+              this.pedidos.push(pedido);
+            });
           }
       });
 
@@ -51,10 +57,17 @@ export class PedidosComponent implements OnInit {
     async getPedidosCulminados(){
       console.log('Entregados');
         const path='pedidos';
-        this.entrgadosSuscriber=this.fireStoreService.getCollectionAlll<Pedido>(path,'estado','==','entregado').subscribe(res=>{
+        const startAt=null;
+        this.entrgadosSuscriber=this.fireStoreService.getCollectionAlll<Pedido>(path,'estado','==','entregado',startAt).subscribe(res=>{
             if (res.length) {
               this.pedidos=res;
             }
         });
+    }
+
+
+    cargarmas(){
+      this.getPedidosNuevos();
+
     }
 }

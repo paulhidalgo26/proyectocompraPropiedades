@@ -13,10 +13,10 @@
 
     <ion-buttons slot="end">
       
-      <ion-button  [routerLink]="['/']"> 
+      <ion-button  [routerLink]="['/home']" (click)="ngOnDestroy()"> 
         <ion-icon color="primary" slot="icon-only" name="storefront-outline"></ion-icon>
       </ion-button>
-      <ion-button  [routerLink]="['/perfil']"> 
+      <ion-button  [routerLink]="['/perfil']" (click)="ngOnDestroy()"> 
         <ion-icon color="primary" slot="icon-only" name="person-circle"></ion-icon>
       </ion-button>
     </ion-buttons>

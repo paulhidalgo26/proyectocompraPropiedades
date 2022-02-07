@@ -9,6 +9,7 @@ import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
 
 
 
+
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
@@ -42,6 +43,7 @@ export class PerfilComponent implements OnInit {
     public toastController: ToastController,
     public alertController: AlertController,
     public loadingController: LoadingController,
+
     ) {
 
        this.firebaseAuthService.stateAuth().subscribe(res=>{
@@ -133,7 +135,6 @@ export class PerfilComponent implements OnInit {
       });
       this.suscriberUserInfo.unsubscribe();
       console.log(this.suscriberUserInfo);
-      this.carritoService.loadCliente();
   }
 
   getuserUid(uid: string){
@@ -168,7 +169,7 @@ export class PerfilComponent implements OnInit {
       this.loading = await this.loadingController.create({
           cssClass: 'normal',
           message: 'Salir',
-          duration: 1000
+          duration: 2000
         });
         await this.loading.present();
       }

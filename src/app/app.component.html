@@ -18,14 +18,14 @@
     </ion-item>
   </ion-menu-toggle>
 
-  <ion-menu-toggle autoHide=false>
+  <ion-menu-toggle autoHide=false *ngIf="!admin">
     <ion-item Button=true detail=true [routerLink]="['/carrito']">
      <ion-label class="normal">Carrito</ion-label>
      <ion-icon slot="start" name="cart-outline"></ion-icon>
     </ion-item>
   </ion-menu-toggle>
 
-  <ion-menu-toggle autoHide=false>
+  <ion-menu-toggle autoHide=false *ngIf="!admin && pedidos">
     <ion-item Button=true detail=true [routerLink]="['/mis-pedidos']">
      <ion-label class="normal">Mis Compras</ion-label>
      <ion-icon slot="start" name="receipt-outline"></ion-icon>

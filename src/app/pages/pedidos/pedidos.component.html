@@ -31,7 +31,7 @@
       <ion-label class="normal">
         Estado: {{pedido.estado}}
         <p>
-          Fecha: {{pedido.fecha.seconds|date}}
+          Fecha: {{pedido.fecha.seconds*1000 |date}}
         </p>
       </ion-label>
     </ion-item>
@@ -43,5 +43,10 @@
 
  </ion-card>
 
-
+ 
 </ion-content>
+<ion-footer>
+  <ion-button (click)="cargarmas()" expand="full"  style="color: white !important;"> 
+    Cargar mas Pedidos
+  </ion-button>
+</ion-footer>

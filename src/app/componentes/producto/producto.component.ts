@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Producto } from 'src/app/models';
@@ -10,33 +10,28 @@ import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
   templateUrl: './producto.component.html',
   styleUrls: ['./producto.component.scss'],
 })
-export class ProductoComponent implements OnInit {
+export class ProductoComponent implements OnInit, OnDestroy {
 
 @Input() producto: Producto;
 clientesuscriber: Subscription;
-  uid=false;
+uid=false;
   constructor( public firebaseAuthService: FirebaseAuthService,
                public carritoService: CarritoService,
                public route: Router ) {
                 this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
-                  console.log(res);
-                  if (res !== null) {
-                    this.uid=true;
-                  }else{
-                    if (this.clientesuscriber) {
-                      this.clientesuscriber.unsubscribe();
-                    }
-                  }
-                });
-
-
+                      if (res) {
+                        this.uid=true;
+                      }
+                    });
                }
+  ngOnDestroy() {
+    console.log('destroy addproducts');
+    this.clientesuscriber.unsubscribe();
+  }
 
   ngOnInit() {
-
   }
   addCarrito(){
-    console.log(this.uid);
     if (this.uid===false) {
       this.route.navigate(['/perfil']);
     }else{

@@ -22,8 +22,6 @@ export class MispedidosComponent implements OnInit ,OnDestroy{
     public fireStoreService: FireStoreService,
     public carritoService: CarritoService,
     public firebaseAuthService: FirebaseAuthService,) {
-
-
     }
 
     ngOnInit() {

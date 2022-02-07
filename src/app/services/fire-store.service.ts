@@ -46,6 +46,7 @@ export class FireStoreService {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     getCollectionQuery<tipo>(path: string,parametro: string,condicion: any,busqueda: string){
+      console.log('query de consulta');
       const collection=this.database.collection<tipo>(path,
         ref=>ref.where(parametro,condicion,busqueda));
       return collection.valueChanges();
@@ -60,9 +61,16 @@ export class FireStoreService {
         }
 
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        getCollectionAlll<tipo>(path: string,parametro: string,condicion: any,busqueda: string){
+        getCollectionAlll<tipo>(path: string,parametro: string,condicion: any,busqueda: string, startat: any){
+          if (startat===null) {
+           startat =new Date();
+          }
           const collection=this.database.collectionGroup<tipo>(path,
-            ref=>ref.where(parametro,condicion,busqueda));
+            ref=>ref.where(parametro,condicion,busqueda)
+              .orderBy('fecha','desc')
+              .limit(2)
+              .startAfter(startat)
+            );
           return collection.valueChanges();
           }
 

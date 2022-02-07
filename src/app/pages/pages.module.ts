@@ -27,6 +27,8 @@ import { PedidosComponent } from './pedidos/pedidos.component';
     RouterModule,
     FormsModule,
     ComponentesModule,
+  ],exports:[
+    CarritoComponent
   ]
 })
 export class PagesModule { }

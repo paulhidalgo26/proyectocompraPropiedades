@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AlertController, LoadingController, MenuController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Producto } from 'src/app/models';
@@ -14,7 +14,7 @@ import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
   templateUrl: './set-productos.component.html',
   styleUrls: ['./set-productos.component.scss'],
 })
-export class SetProductosComponent implements OnInit {
+export class SetProductosComponent implements OnInit, OnDestroy {
 
   productos: Producto[]=[];
   newProducto: Producto;
@@ -37,6 +37,8 @@ export class SetProductosComponent implements OnInit {
   getproductosSuscriber: Subscription;
   // eslint-disable-next-line @typescript-eslint/member-ordering
   admin=false;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  boton=false;
 
   constructor(public menucontrol: MenuController,
               public toastController: ToastController,
@@ -49,11 +51,13 @@ export class SetProductosComponent implements OnInit {
                   console.log(res);
                   if (res !== null) {
                     if (res.uid==='ObvvlGMzHAdsbRC37aUHLl8mxsF3') {
+                      this.boton=true;
                       console.log(this.uid);
                         this.admin=true;
                         this.uidadmin=res.uid;
                         this.getProductos();
                     }else{
+                      this.boton=true;
                       this.uid=res.uid;
                       this.getProductosCliente();
                     }
@@ -70,6 +74,12 @@ export class SetProductosComponent implements OnInit {
                   }
                 });
               }
+
+
+  ngOnDestroy(){
+    console.log('destroy producto');
+   // this.productosuscribe.unsubscribe();
+  }
 
   ngOnInit() {
   //  this.getProductosCliente();

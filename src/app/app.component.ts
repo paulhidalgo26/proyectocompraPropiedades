@@ -10,6 +10,7 @@ import { FirebaseAuthService } from './services/firebase-auth.service';
 export class AppComponent {
 
     admin=false;
+    pedidos=false;
   constructor(private firebaseAuthService: FirebaseAuthService) {
     this.getUid();
   }
@@ -21,9 +22,11 @@ getUid(){
         this.admin=true;
       }else{
         this.admin=false;
+        this.pedidos=true;
       }
     }else{
       this.admin=false;
+      this.pedidos=false;
     }
   });
 }

@@ -30,9 +30,8 @@ export class CarritoService {
               public fireStoreService: FireStoreService,
               public route: Router) {
                 this.initCarrito();
-                setTimeout(() => {
                   this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
-                    console.log(res,);
+                    console.log(res);
                     if (res !== null) {
                       this.uid=res.uid;
                       this.loadCliente();
@@ -45,7 +44,7 @@ export class CarritoService {
                     //  }
                     }
                   });
-                },100);
+
    }
 
 
@@ -116,6 +115,7 @@ addProductos(producto: Producto){
     const path ='Clientes/'+this.uid+'/'+'carrito';
     this.fireStoreService.createDoc(this.pedido,path,this.uid).then(()=>{
         console.log('añdido con exito');
+        this.route.navigate(['/carrito']);
     });
   }
 
