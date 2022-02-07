@@ -55,6 +55,8 @@ export class SetProductosComponent implements OnInit {
                       this.uid=res.uid;
                       this.getProductosCliente();
                     }
+                  }else{
+                    this.clientesuscriber.unsubscribe();
                   }
                 });
               }
