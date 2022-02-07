@@ -28,14 +28,16 @@ export class CarritoComponent implements OnInit,OnDestroy {
     public firebaseAuthService: FirebaseAuthService,
     public route: Router) {
 
-      this.initCarrito();
+      //this.initCarrito();
       this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
         console.log(res);
-
         if (res !== null) {
           this.loadPedidos();
         }else{
-          this.clientesuscriber.unsubscribe();
+          if ( this.clientesuscriber) {
+            this.clientesuscriber.unsubscribe();
+            this.initCarrito();
+          }
         }
       });
   }
@@ -46,7 +48,9 @@ ngOnDestroy() {
     this.cariitosuscriber.unsubscribe();
 }
 }
-  ngOnInit() {}
+  ngOnInit() {
+   this.initCarrito();
+  }
 
  openMenu(){
     console.log('open menu');

@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Producto } from 'src/app/models';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
@@ -11,21 +13,34 @@ import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
 export class ProductoComponent implements OnInit {
 
 @Input() producto: Producto;
-
-  uid='';
+clientesuscriber: Subscription;
+  uid=false;
   constructor( public firebaseAuthService: FirebaseAuthService,
-               public carritoService: CarritoService ) { }
+               public carritoService: CarritoService,
+               public route: Router ) {
+                this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
+                  console.log(res);
+                  if (res !== null) {
+                    this.uid=true;
+                  }else{
+                    if (this.clientesuscriber) {
+                      this.clientesuscriber.unsubscribe();
+                    }
+                  }
+                });
+
+
+               }
 
   ngOnInit() {
-   // console.log('el producto es',this.producto);
+
   }
   addCarrito(){
-    this.firebaseAuthService.getUid().then(res=>{
-      console.log(res);
-      this.uid=res;
-    });
-    setTimeout(()=>{
+    console.log(this.uid);
+    if (this.uid===false) {
+      this.route.navigate(['/perfil']);
+    }else{
       this.carritoService.addProductos(this.producto);
-    },100);
+    }
   }
 }

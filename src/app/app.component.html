@@ -27,7 +27,7 @@
 
   <ion-menu-toggle autoHide=false>
     <ion-item Button=true detail=true [routerLink]="['/mis-pedidos']">
-     <ion-label class="normal">Mis Pedidos</ion-label>
+     <ion-label class="normal">Mis Compras</ion-label>
      <ion-icon slot="start" name="receipt-outline"></ion-icon>
     </ion-item>
   </ion-menu-toggle>
@@ -47,9 +47,9 @@
     </ion-item>
   </ion-menu-toggle>
 
-  <ion-menu-toggle autoHide=false>
-    <ion-item Button=true detail=true [routerLink]="['/perfil']">
-     <ion-label class="normal">Todos los Pedidos</ion-label>
+  <ion-menu-toggle autoHide=false *ngIf="admin">
+    <ion-item Button=true detail=true [routerLink]="['/pedidos']">
+     <ion-label class="normal">Todos las compras</ion-label>
      <ion-icon slot="start" name="library-outline"></ion-icon>
     </ion-item>
   </ion-menu-toggle>

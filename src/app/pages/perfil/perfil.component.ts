@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
-import { Subscriber, Subscription } from 'rxjs';
+import { AlertController, LoadingController, MenuController, ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Cliente } from 'src/app/models';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { FireStorageService } from 'src/app/services/fire-storage.service';
 import { FireStoreService } from 'src/app/services/fire-store.service';
 import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
+
 
 
 @Component({
@@ -25,10 +26,11 @@ export class PerfilComponent implements OnInit {
     ubicacion:null
 
   };
-
+  loading: any;
   newFile: any;
   uid='';
   suscriberUserInfo: Subscription;
+  clientesuscriber: Subscription;
   ingresarEnable=false;
 
 
@@ -36,7 +38,11 @@ export class PerfilComponent implements OnInit {
     public firebaseAuthService: FirebaseAuthService,
     public fireStoreService: FireStoreService,
     public fireStorageService: FireStorageService,
-    public carritoService: CarritoService) {
+    public carritoService: CarritoService,
+    public toastController: ToastController,
+    public alertController: AlertController,
+    public loadingController: LoadingController,
+    ) {
 
        this.firebaseAuthService.stateAuth().subscribe(res=>{
         if (res !== null) {
@@ -104,17 +110,13 @@ export class PerfilComponent implements OnInit {
   }
 
   async guardarUser(){
-
-
+    this.inicioLoading();
     const path='Clientes';
     const name=this.cliente.nombre;
     if (this.newFile !== undefined) {
       const res= await this.fireStorageService.uploadImage(this.newFile, path,name);
-
       this.cliente.foto=res;
     }
-
-
     this.fireStoreService.createDoc(this.cliente,path,this.cliente.uid).then(
     res => {
           console.log('guardado con exito');
@@ -125,11 +127,13 @@ export class PerfilComponent implements OnInit {
   }
 
   salir(){
-
+      this.salidaoading();
       this.firebaseAuthService.logout().then(res=>{
-        console.log(res);
+        console.log('logOut');
       });
       this.suscriberUserInfo.unsubscribe();
+      console.log(this.suscriberUserInfo);
+      this.carritoService.loadCliente();
   }
 
   getuserUid(uid: string){
@@ -140,14 +144,33 @@ export class PerfilComponent implements OnInit {
   }
 
   ingresar(){
+    this.inicioLoading();
     const credenciales={
       email:this.cliente.email,
       password:this.cliente.celular,
     };
     this.firebaseAuthService.login(credenciales.email,credenciales.password).then(res=>{
+
       console.log('ingreso con exito');
-      this.carritoService.verificar();
     });
+    this.firebaseAuthService.stateAuth();
   }
+
+  async inicioLoading() {
+    this.loading = await this.loadingController.create({
+        cssClass: 'normal',
+        message: 'Cargando Informacion',
+        duration: 2000
+      });
+      await this.loading.present();
+    }
+    async salidaoading() {
+      this.loading = await this.loadingController.create({
+          cssClass: 'normal',
+          message: 'Salir',
+          duration: 1000
+        });
+        await this.loading.present();
+      }
 
 }

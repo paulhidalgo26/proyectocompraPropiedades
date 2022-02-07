@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
+
 import { Cliente, Pedido, Producto, ProductoPedido } from '../models';
 import { FireStoreService } from './fire-store.service';
 import { FirebaseAuthService } from './firebase-auth.service';
@@ -28,22 +30,24 @@ export class CarritoService {
               public fireStoreService: FireStoreService,
               public route: Router) {
                 this.initCarrito();
-                this.verificar();
+                setTimeout(() => {
+                  this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
+                    console.log(res,);
+                    if (res !== null) {
+                      this.uid=res.uid;
+                      this.loadCliente();
+                    }else{
+                    //   if (this.clientesuscriber) {
+                    //     this.clientesuscriber.unsubscribe();
+                    //  }
+                    //  if (this.cariitosuscriber) {
+                    //   this.cariitosuscriber.unsubscribe();
+                    //  }
+                    }
+                  });
+                },100);
    }
 
-
-   verificar(){
-   this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
-      console.log(res);
-      if (res !== null) {
-        this.uid=res.uid;
-        this.loadCliente();
-      }else{
-       //this.cariitosuscriber.unsubscribe();
-       this.clientesuscriber.unsubscribe();
-      }
-    });
-   }
 
   loadCarrito(){
     const path ='Clientes/'+this.uid+'/'+'carrito';
@@ -86,13 +90,9 @@ getCarrito(): Observable<Pedido>{
     this.pedido$.next(this.pedido);
   },100);
  return this.pedido$.asObservable();
-
-
 }
 
-  addProductos(producto: Producto){
-    setTimeout(()=>{
-    },100);
+addProductos(producto: Producto){
     if (this.uid.length) {
         // eslint-disable-next-line arrow-body-style
        const item= this.pedido.productos.find(productoPedido=>{

@@ -34,19 +34,21 @@ export class SetProductosComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   productosuscribe: Subscription;
   // eslint-disable-next-line @typescript-eslint/member-ordering
+  getproductosSuscriber: Subscription;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   admin=false;
 
   constructor(public menucontrol: MenuController,
               public toastController: ToastController,
-              public alertController: AlertController,
               public fireStoreService: FireStoreService,
               public fireStorageService: FireStorageService,
+              public alertController: AlertController,
               public loadingController: LoadingController,
               public firebaseAuthService: FirebaseAuthService) {
                 this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
                   console.log(res);
                   if (res !== null) {
-                    if (res.uid==='phTnOHMce5TCgF662tXyLK3EPp52') {
+                    if (res.uid==='ObvvlGMzHAdsbRC37aUHLl8mxsF3') {
                       console.log(this.uid);
                         this.admin=true;
                         this.uidadmin=res.uid;
@@ -56,7 +58,15 @@ export class SetProductosComponent implements OnInit {
                       this.getProductosCliente();
                     }
                   }else{
-                    this.clientesuscriber.unsubscribe();
+                    if (this.clientesuscriber) {
+                      this.clientesuscriber.unsubscribe();
+                    }
+                    if (this.getproductosSuscriber) {
+                      this.getproductosSuscriber.unsubscribe();
+                    }
+                    if (this.productosuscribe) {
+                      this.productosuscribe.unsubscribe();
+                    }
                   }
                 });
               }
@@ -101,7 +111,7 @@ export class SetProductosComponent implements OnInit {
   }
 
   getProductos(){
-      this.fireStoreService.getColleccion<Producto>(this.path).subscribe(res=>{
+    this.getproductosSuscriber= this.fireStoreService.getColleccion<Producto>(this.path).subscribe(res=>{
         console.log(res);
        this.productos=res;
       });

@@ -7,6 +7,7 @@ import { MispedidosComponent } from './pages/mispedidos/mispedidos.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { canActivate } from '@angular/fire/compat/auth-guard';
 import { map } from 'rxjs/operators';
+import { PedidosComponent } from './pages/pedidos/pedidos.component';
 
 //senda forama de seguridad ///////////////////////////////////////////////
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'set-productos', component: SetProductosComponent  },
   {path: 'carrito', component: CarritoComponent },
   {path: 'mis-pedidos', component: MispedidosComponent },
+  {path: 'pedidos', component: PedidosComponent },
   {path: 'perfil', component: PerfilComponent },
   { path: '', component: HomeComponent},
   { path: '**', redirectTo: 'home', pathMatch: 'full'},
