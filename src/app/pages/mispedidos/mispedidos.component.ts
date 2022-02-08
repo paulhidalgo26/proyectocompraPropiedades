@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { Pedido } from 'src/app/models';
+import { Compra } from 'src/app/models';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { FireStoreService } from 'src/app/services/fire-store.service';
 import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
@@ -15,7 +15,7 @@ export class MispedidosComponent implements OnInit ,OnDestroy{
 
   nuevosSuscriber: Subscription;
   entrgadosSuscriber: Subscription;
-  pedidos: Pedido[]=[];
+  pedidos: Compra[]=[];
 
 
   constructor(public menucontroler: MenuController,
@@ -55,7 +55,7 @@ async getPedidosNuevos(){
 console.log('Nuevos');
 const uid= await this.firebaseAuthService.getUid();
   const path='Clientes/'+ uid+'/pedidos/';
-  this.nuevosSuscriber=this.fireStoreService.getCollectionQuery<Pedido>(path,'estado','==','enviado').subscribe(res=>{
+  this.nuevosSuscriber=this.fireStoreService.getCollectionQuery<Compra>(path,'estado','==','enviado').subscribe(res=>{
       if (res.length) {
         this.pedidos=res;
       }
@@ -66,7 +66,7 @@ async getPedidosCulminados(){
   console.log('Entregados');
   const uid= await this.firebaseAuthService.getUid();
     const path='Clientes/'+ uid+'/pedidos/';
-    this.entrgadosSuscriber=this.fireStoreService.getCollectionQuery<Pedido>(path,'estado','==','entregado').subscribe(res=>{
+    this.entrgadosSuscriber=this.fireStoreService.getCollectionQuery<Compra>(path,'estado','==','entregado').subscribe(res=>{
         if (res.length) {
           this.pedidos=res;
         }

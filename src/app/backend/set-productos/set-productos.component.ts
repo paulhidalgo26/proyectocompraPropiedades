@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AlertController, LoadingController, MenuController, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { async } from '@firebase/util';
+import { AlertController, LoadingController, MenuController, ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { Producto } from 'src/app/models';
+import { GooglemapsComponent } from 'src/app/googlemaps/googlemaps.component';
+import { Propiedad } from 'src/app/models';
 import { FireStorageService } from 'src/app/services/fire-storage.service';
-
-
 import { FireStoreService } from 'src/app/services/fire-store.service';
 import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
 
@@ -16,15 +17,14 @@ import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
 })
 export class SetProductosComponent implements OnInit, OnDestroy {
 
-  productos: Producto[]=[];
-  newProducto: Producto;
+  propiedades: Propiedad[]=[];
+  newPropiedad: Propiedad;
   loading: any;
-  newProduct= '';
   newfile='';
   newimage='';
   enableNewProducto= false;
   editar=false;
-  private path= 'Productos/';
+  private path= 'Propiedades/';
   // eslint-disable-next-line @typescript-eslint/member-ordering
   clientesuscriber: Subscription;
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -46,11 +46,14 @@ export class SetProductosComponent implements OnInit, OnDestroy {
               public fireStorageService: FireStorageService,
               public alertController: AlertController,
               public loadingController: LoadingController,
-              public firebaseAuthService: FirebaseAuthService) {
+              public firebaseAuthService: FirebaseAuthService,
+              public modalController: ModalController,
+              public rote: Router) {
+
                 this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
                   console.log(res);
                   if (res !== null) {
-                    if (res.uid==='ObvvlGMzHAdsbRC37aUHLl8mxsF3') {
+                    if (res.uid==='') {
                       this.boton=true;
                       console.log(this.uid);
                         this.admin=true;
@@ -62,6 +65,7 @@ export class SetProductosComponent implements OnInit, OnDestroy {
                       this.getProductosCliente();
                     }
                   }else{
+                    this.boton=false;
                     if (this.clientesuscriber) {
                       this.clientesuscriber.unsubscribe();
                     }
@@ -78,12 +82,9 @@ export class SetProductosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     console.log('destroy producto');
-   // this.productosuscribe.unsubscribe();
   }
 
-  ngOnInit() {
-  //  this.getProductosCliente();
-  }
+  ngOnInit() {}
 
   openMenu(){
     console.log('abrir el menu');
@@ -92,15 +93,14 @@ export class SetProductosComponent implements OnInit, OnDestroy {
 
   async guaradarproducto(){
     this.presentLoading();
-
-    const path='Productos';
-    const name=this.newProducto.nombre;
+    const path='Propiedades/';
+    const name=this.newPropiedad.ciudad;
     if (this.editar===false) {
       console.log('false');
-      const res= await this.fireStorageService.uploadImage(this.newfile, path,name);
-    this.newProducto.foto=res;
+      const res= await this.fireStorageService.uploadImage(this.newfile,path,name);
+    this.newPropiedad.foto=res;
     console.log('fin de la funcion');
-    this.fireStoreService.createDoc(this.newProducto,this.path,this.newProducto.id).then(resp=>{
+    this.fireStoreService.createDoc(this.newPropiedad,this.path,this.newPropiedad.id).then(resp=>{
     this.loading.dismiss();
 
     this.presentToast('Guaradado con exito');
@@ -109,9 +109,9 @@ export class SetProductosComponent implements OnInit, OnDestroy {
     });
   }else{
     console.log('true');
-    this.fireStoreService.createDoc(this.newProducto,this.path,this.newProducto.id).then(resp=>{
+    this.fireStoreService.createDoc(this.newPropiedad,this.path,this.newPropiedad.id).then(resp=>{
+      console.log(resp);
       this.loading.dismiss();
-
       this.presentToast('Guaradado con exito');
       }).catch(err=>{
         this.presentToast('error al guardar');
@@ -121,26 +121,26 @@ export class SetProductosComponent implements OnInit, OnDestroy {
   }
 
   getProductos(){
-    this.getproductosSuscriber= this.fireStoreService.getColleccion<Producto>(this.path).subscribe(res=>{
+    this.getproductosSuscriber= this.fireStoreService.getColleccion<Propiedad>(this.path).subscribe(res=>{
         console.log(res);
-       this.productos=res;
+       this.propiedades=res;
       });
   }
 
 
    getProductosCliente(){
     console.log('productos del cliente');
-      this.productosuscribe=this.fireStoreService.getCollectionQueryProductos<Producto>(this.path,'idc','==',this.uid).subscribe(res=>{
+      this.productosuscribe=this.fireStoreService.getCollectionQueryProductos<Propiedad>(this.path,'idc','==',this.uid).subscribe(res=>{
         console.log(this.uid);
           if (res.length) {
-            this.productos=res;
+            this.propiedades=res;
           }
       });
     }
 
 
 
-  async deleteProducto(producto: Producto){
+  async deleteProducto(propiedad: Propiedad){
 
     const alert = await this.alertController.create({
       cssClass: 'normal',
@@ -158,7 +158,7 @@ export class SetProductosComponent implements OnInit, OnDestroy {
           text: 'ok',
           handler: () => {
             console.log('Confirm Okay');
-            this.fireStoreService.deleteDoc(this.path,producto.id).then(res=>{
+            this.fireStoreService.deleteDoc(this.path,propiedad.id).then(res=>{
               this.presentToast('Eliminado con exito');
               this.alertController.dismiss();
             }).catch(rerror=> {
@@ -172,11 +172,18 @@ export class SetProductosComponent implements OnInit, OnDestroy {
 }
 
 nuevo(){
+  if (this.boton===false) {
+    this.rote.navigate(['/perfil']);
+    return;
+  }
   this.enableNewProducto=true;
-  this.newProducto={
-    nombre: '',
-    precioNormal: null,
-    precioReducido: null,
+  this.newPropiedad={
+    direccion: '',
+    ciudad: '',
+    ubicacion: null,
+    precio: null,
+    telefono: null,
+    descripcion: '',
     foto: '',
     id: this.fireStoreService.getId(),
     idc: this.uid,
@@ -212,7 +219,7 @@ async newimageupload(event: any){
     this.newfile=event.target.files[0];
     const reader=new FileReader();
     reader.onload=((image)=>{
-     this.newProducto.foto= image.target.result as string;
+     this.newPropiedad.foto= image.target.result as string;
     });
     reader.readAsDataURL(event.target.files[0]);
 
@@ -220,6 +227,30 @@ async newimageupload(event: any){
 
 }
 
+async addDireccion(){
+  const ubicacion=this.newPropiedad.ubicacion;
+  // eslint-disable-next-line prefer-const
+  let positioninput={
+    lat:-2.898116,
+    lng: -78.9995814999
+  };
+  if (ubicacion !== null) {
+    positioninput=ubicacion;
+  }
 
+  const modalAdd = await this.modalController.create({
+    component: GooglemapsComponent,
+    mode: 'ios',
+    swipeToClose:true,
+    componentProps: (positioninput)
+  });
+  await modalAdd.present();
+  const {data}=await modalAdd.onWillDismiss();
+  if (data) {
+    console.log('data => ',data);
+    this.newPropiedad.ubicacion=data.pos;
+    console.log('propiedad', this.newPropiedad);
+  }
+}
 
 }

@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar  class="new-background-color">
     <ion-title class="subtitle" style="text-align: center;">
-        COMPRA VENTA PRODUCTOS 
+        PROPIEDADES EN VENTA
     </ion-title>
 
     <ion-buttons slot="start">
@@ -26,8 +26,8 @@
 
 <ion-content>
 
-  <div *ngFor="let producto of productos">
-    <app-producto  [producto]=producto>  
+  <div *ngFor="let propiedad of propiedades">
+    <app-producto  [propiedad]=propiedad>  
     </app-producto>
 
   </div>

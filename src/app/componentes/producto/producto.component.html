@@ -1,12 +1,13 @@
-<ion-card style="position: relative;">
-  <ion-img class="center" [src]="producto.foto"></ion-img>
+<ion-card style="position: relative; border: solid;">
+  <ion-img class="center" [src]="propiedad.foto"></ion-img>
  
-<ion-label class="subtitulo">{{producto.nombre}}</ion-label>
+<!-- <ion-label class="subtitulo  text-end" >{{propiedad.ciudad}}</ion-label> -->
+<br>
+ <p class="subtitulo  text-center"> Ciudad: {{propiedad.ciudad}}</p>
   <hr>
-  <p class="tachado">{{producto.precioNormal}}$ </p>
-  <p class="precio">{{producto.precioReducido}}$ </p>
+  <p class="precio text-start">Precio: ${{propiedad.precio}} </p>
   
     <button>
-      <ion-icon (click)="addCarrito();ngOnDestroy()" class="icon-producto"name="cart-sharp"></ion-icon>
+      <ion-icon (click)="addCarrito();ngOnDestroy()" class="icon-producto"name="document-text-outline"></ion-icon>
     </button>
 </ion-card>

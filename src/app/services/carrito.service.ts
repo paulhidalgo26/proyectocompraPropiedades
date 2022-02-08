@@ -3,7 +3,7 @@ import { async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 
-import { Cliente, Pedido, Producto, ProductoPedido } from '../models';
+import { Cliente, Compra, ProductoPedido, Propiedad } from '../models';
 import { FireStoreService } from './fire-store.service';
 import { FirebaseAuthService } from './firebase-auth.service';
 
@@ -12,7 +12,7 @@ import { FirebaseAuthService } from './firebase-auth.service';
 })
 export class CarritoService {
 
- private pedido: Pedido;
+ private propiedad: Compra;
  // eslint-disable-next-line @typescript-eslint/member-ordering
  path='carrito';
  // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -20,7 +20,7 @@ export class CarritoService {
  // eslint-disable-next-line @typescript-eslint/member-ordering
  cliente: Cliente;
  // eslint-disable-next-line @typescript-eslint/member-ordering
- pedido$ = new Subject<Pedido>();
+ propiedad$ = new Subject<Compra>();
  // eslint-disable-next-line @typescript-eslint/member-ordering
  cariitosuscriber: Subscription;
  // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -50,11 +50,11 @@ export class CarritoService {
 
   loadCarrito(){
     const path ='Clientes/'+this.uid+'/'+'carrito';
- this.cariitosuscriber= this.fireStoreService.getDoc<Pedido>(path,this.uid).subscribe(res=>{
+ this.cariitosuscriber= this.fireStoreService.getDoc<Compra>(path,this.uid).subscribe(res=>{
     if (res) {
-      this.pedido=res;
+      this.propiedad=res;
 
-      this.pedido$.next(this.pedido);
+      this. propiedad$.next(this.propiedad);
     }else{
       this.initCarrito();
     }
@@ -63,16 +63,14 @@ export class CarritoService {
   }
 
   initCarrito(){
-    this.pedido={
+    this.propiedad={
       id: this.uid,
       cliente: this.cliente,
       productos: [],
-      precioTotal: null,
       estado: 'enviado',
       fecha: new Date(),
-      valoracion: null,
     };
-    this.pedido$.next(this.pedido);
+    this.propiedad$.next(this.propiedad);
   }
 
 
@@ -84,58 +82,50 @@ export class CarritoService {
     });
   }
 
-getCarrito(): Observable<Pedido>{
+getCarrito(): Observable<Compra>{
   setTimeout(()=>{
-    this.pedido$.next(this.pedido);
+    this.propiedad$.next(this.propiedad);
   },100);
- return this.pedido$.asObservable();
+ return this.propiedad$.asObservable();
 }
 
-addProductos(producto: Producto){
+addProductos(propiedad: Propiedad){
     if (this.uid.length) {
         // eslint-disable-next-line arrow-body-style
-       const item= this.pedido.productos.find(productoPedido=>{
-          return (productoPedido.producto.id===producto.id);
+       const item= this.propiedad.productos.find(productoPedido=>{
+          return (productoPedido.producto.id===propiedad.id);
         });
         if (item!== undefined) {
-            item.cantidad++;
+            //poner mensaje de producto ya esta en compras
         }else{
           const add: ProductoPedido={
-            cantidad:1,
-            producto,
+            producto: propiedad
           };
-          this.pedido.productos.push(add);
+          this.propiedad.productos.push(add);
         }
     }else{
         this.route.navigate(['/perfil']);
         return;
     }
-    this.pedido$.next(this.pedido);
-    console.log('en add pedido => ', this.pedido);
+    this.propiedad$.next(this.propiedad);
+    console.log('en add pedido => ', this.propiedad);
     const path ='Clientes/'+this.uid+'/'+'carrito';
-    this.fireStoreService.createDoc(this.pedido,path,this.uid).then(()=>{
+    this.fireStoreService.createDoc(this.propiedad,path,this.uid).then(()=>{
         console.log('añdido con exito');
         this.route.navigate(['/carrito']);
     });
   }
 
-  removeProducto(producto: Producto){
+  removeProducto(producto: Propiedad){
     if (this.uid.length) {
       let pocision=0;
-      const item= this.pedido.productos.find((productoPedido , index)=>{
+      const item= this.propiedad.productos.find((productoPedido , index)=>{
           pocision=index;
           return(productoPedido.producto.id===producto.id);
       });
       if (item !==undefined) {
-        item.cantidad --;
-        if (item.cantidad===0) {
-          this.pedido.productos.splice(pocision, 1);
-        }
-        console.log('app remove pedido ',this.pedido);
-        const path='Clientes/' + this.uid +'/'+this.path;
-        this.fireStoreService.createDoc(this.pedido,path,this.uid).then(()=>{
-          console.log('removido  con exito');
-        });
+        this.propiedad.productos.splice(pocision, 1);
+        console.log('app remove pedido ',this.propiedad);
       }
   }
   }

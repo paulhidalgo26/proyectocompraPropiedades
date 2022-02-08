@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button >
+        <ion-icon  name="arrow-back-outline"></ion-icon>
+      </ion-button> 
+    </ion-buttons>
+    <ion-title>
+      Elija ubucacion
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div #mapa class="map"></div>
+  <ion-chip class="miubicacion" (click)="mylocation()">
+    <ion-label>mi ubicacion acttual</ion-label>
+    <ion-icon name="locate"></ion-icon>>
+  </ion-chip>
+
+  <ion-chip class="aceptar" (click)="aceptar()">
+    <ion-label>Aceptar</ion-label>
+    <ion-icon name="checkmark-circle"></ion-icon>
+  </ion-chip>
+</ion-content>

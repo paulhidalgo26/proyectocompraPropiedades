@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { Pedido } from 'src/app/models';
+import { Compra } from 'src/app/models';
 import { FireStoreService } from 'src/app/services/fire-store.service';
 import { FirebaseAuthService } from 'src/app/services/firebase-auth.service';
 
@@ -14,7 +14,7 @@ export class PedidosComponent implements OnInit {
 
   nuevosSuscriber: Subscription;
   entrgadosSuscriber: Subscription;
-  pedidos: Pedido[]=[];
+  pedidos: Compra[]=[];
   constructor(public menucontroler: MenuController,
     public firebaseAuthService: FirebaseAuthService,
     public fireStoreService: FireStoreService) { }
@@ -44,7 +44,7 @@ export class PedidosComponent implements OnInit {
       if (this.pedidos.length) {
         startAt=this.pedidos[this.pedidos.length -1].fecha;
       }
-      this.nuevosSuscriber=this.fireStoreService.getCollectionAlll<Pedido>(path,'estado','==','enviado',startAt).subscribe(res=>{
+      this.nuevosSuscriber=this.fireStoreService.getCollectionAlll<Compra>(path,'estado','==','enviado',startAt).subscribe(res=>{
           if (res.length) {
             res.forEach(pedido=>{
               this.pedidos.push(pedido);
@@ -58,7 +58,7 @@ export class PedidosComponent implements OnInit {
       console.log('Entregados');
         const path='pedidos';
         const startAt=null;
-        this.entrgadosSuscriber=this.fireStoreService.getCollectionAlll<Pedido>(path,'estado','==','entregado',startAt).subscribe(res=>{
+        this.entrgadosSuscriber=this.fireStoreService.getCollectionAlll<Compra>(path,'estado','==','entregado',startAt).subscribe(res=>{
             if (res.length) {
               this.pedidos=res;
             }

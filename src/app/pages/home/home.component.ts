@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
-import { Producto } from 'src/app/models';
+import { Propiedad } from 'src/app/models';
 import { FireStoreService } from 'src/app/services/fire-store.service';
 
 @Component({
@@ -10,9 +10,9 @@ import { FireStoreService } from 'src/app/services/fire-store.service';
 })
 export class HomeComponent implements OnInit {
 
-private path='Productos/';
+private path='Propiedades/';
 // eslint-disable-next-line @typescript-eslint/member-ordering
-productos: Producto[]=[];
+propiedades: Propiedad[]=[];
 
   constructor(public menucontrol: MenuController,
               public fireStoreService: FireStoreService) {
@@ -26,9 +26,9 @@ productos: Producto[]=[];
     this.menucontrol.toggle('principal');
   }
   loadproductos(){
-    this.fireStoreService.getColleccion<Producto>(this.path).subscribe(res=>{
+    this.fireStoreService.getColleccion<Propiedad>(this.path).subscribe(res=>{
      // console.log(res);
-      this.productos=res;
+      this.propiedades=res;
     });
   }
 

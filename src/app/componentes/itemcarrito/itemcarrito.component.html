@@ -1,32 +1,31 @@
 <ion-card>
   <ion-grid>
-    <ion-row>
-      <ion-col size="6">
-        <ion-img [src]="productoPedido.producto.foto"></ion-img>
-        
-      </ion-col>
-
-      <ion-col size="6">
-        <ion-item>
-          <ion-label class="subtitle ion-text-wrap">{{productoPedido.producto.nombre}}</ion-label>
-        </ion-item> 
-        <div> 
-                       
-          <p class="normal normal m-3" >Precio: {{productoPedido.producto.precioReducido}}</p>
-          <p class="normal normal m-3">Cantidad: {{productoPedido.cantidad}}</p>        
-                  
-      </div>           
-      </ion-col>
-    </ion-row>    
-          
-            <div *ngIf="botones">
-              <!-- <ion-button color="secondary"(click)="addCarrito()">
-                <ion-icon slot="icon-only" name="add" ></ion-icon>
-              </ion-button> -->
+    <ion-img [src]="productoPedido.producto.foto" class="center"></ion-img>   
+    <p>Informacion</p>    
+<ion-row>
+  <ion-col size="6" class="columna">
+    <p class="normal">Ciudad: {{productoPedido.producto.ciudad}}</p> <br>  
+    <hr>    
+    <p class="normal">Contacto: {{productoPedido.producto.telefono}}</p>  <br>
+    <hr>       
+    <p class="normal">Precio: {{productoPedido.producto.precio}}</p><br>
+    <hr>  
+  </ion-col>
+  <ion-col size="6"class="columna">
+    <p class="normal">Descriccion: {{productoPedido.producto.descripcion}}</p>  <br>        
+    <hr>  
+    <p  class="normal ub">Ubicacion: {{productoPedido.producto.ubicacion}}</p> <br> 
+   <p class="mapa"> 
+     <ion-button><ion-icon slot="icon-only" name="navigate-circle-outline"></ion-icon></ion-button>  </p>
+  </ion-col>
+</ion-row>
       
+          <hr>
+
+            <div class="text-center icon-producto" *ngIf="botones">     
               <ion-button color="danger" (click)="removeCarrito()">
-                <ion-icon  slot="icon-only" name="remove" ></ion-icon>
-              </ion-button>
+                <ion-icon  slot="icon-only" name="close-outline" ></ion-icon>
+              </ion-button>              
             </div>              
            
   </ion-grid>

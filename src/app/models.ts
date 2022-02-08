@@ -1,8 +1,14 @@
 
-export interface Producto{
-    nombre: string;
-    precioNormal: number;
-    precioReducido: number;
+export interface Propiedad{
+    direccion: string;
+    ciudad: string;
+    ubicacion: {
+        lat: number;
+        lng: number;
+    };
+    precio: number;
+    telefono: number;
+    descripcion: string;
     foto: string;
     id: string;
     idc: string;
@@ -18,17 +24,14 @@ export interface Cliente{
     ubicacion: any;
 }
 
-export interface Pedido{
+export interface Compra{
     id: string;
     cliente: Cliente;
     productos: ProductoPedido[];
-    precioTotal: number;
     estado: string;
     fecha: any;
-    valoracion: number;
 }
 export interface ProductoPedido{
-    producto: Producto;
-    cantidad: number;
+    producto: Propiedad;
 }
 export type EstadoPedido='enviado'|'visto'|'camino'|'entregado';

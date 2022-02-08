@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
-import { Pedido } from 'src/app/models';
+import { Compra, Propiedad } from 'src/app/models';
 import { FireStoreService } from 'src/app/services/fire-store.service';
 import {CarritoService} from 'src/app/services/carrito.service';
 import { Subscription } from 'rxjs';
@@ -14,11 +14,10 @@ import {  Router } from '@angular/router';
 })
 export class CarritoComponent implements OnInit,OnDestroy {
 
-  pedido: Pedido;
+  propiedad: Compra;
   cariitosuscriber: Subscription;
   clientesuscriber: Subscription;
-  total: number;
-  cantidad: number;
+
 
 
 
@@ -54,48 +53,31 @@ ngOnDestroy() {
   }
   loadPedidos(){
   this.cariitosuscriber= this.carritoService.getCarrito().subscribe(res=>{
-    this.pedido=res;
-    this.getTotal();
-    this.getCantidad();
+    this.propiedad=res;
   });
   }
   initCarrito(){
-    this.pedido={
+    this.propiedad={
       id: '',
       cliente: null,
       productos: [],
-      precioTotal: null,
       estado: 'enviado',
       fecha: new Date(),
-      valoracion: null,
     };
   }
 
-  getTotal(){
-    this.total=0;
-  this.pedido.productos.forEach(producto => {
-    this.total=(producto.producto.precioReducido)*producto.cantidad + this.total;
-  });
 
-  }
-  getCantidad(){
-    this.cantidad=0;
-    this.pedido.productos.forEach(producto => {
-      this.cantidad=producto.cantidad + this.cantidad;
-    });
-  }
 
   async pedir(){
-    if (!this.pedido.productos.length) {
+    if (!this.propiedad.productos.length) {
       console.log('Añadir items al carrito');
       return;
     }
-    this.pedido.fecha=new Date();
-    this.pedido.precioTotal=this.total;
-    this.pedido.id=this.fireStoreService.getId();
+    this.propiedad.fecha=new Date();
+    this.propiedad.id=this.fireStoreService.getId();
     const uid= await this.firebaseAuthService.getUid();
-    const path='Clientes/'+ uid+'/pedidos/';
-    this.fireStoreService.createDoc(this.pedido,path,this.pedido.id).then
+    const path='Clientes/'+ uid+'/compras/';
+    this.fireStoreService.createDoc(this.propiedad,path,this.propiedad.id).then
     (()=>{
         console.log('guardado con exito');
         this.carritoService.clearCarrito();
