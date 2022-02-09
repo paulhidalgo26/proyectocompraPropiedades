@@ -34,4 +34,4 @@ export interface Compra{
 export interface ProductoPedido{
     producto: Propiedad;
 }
-export type EstadoPedido='enviado'|'visto'|'camino'|'entregado';
+export type EstadoPedido='visto'|'comprado';

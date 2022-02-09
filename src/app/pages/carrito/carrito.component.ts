@@ -61,7 +61,7 @@ ngOnDestroy() {
       id: '',
       cliente: null,
       productos: [],
-      estado: 'enviado',
+      estado: 'visto',
       fecha: new Date(),
     };
   }

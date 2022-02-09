@@ -15,12 +15,17 @@ export class ProductoComponent implements OnInit, OnDestroy {
 @Input() propiedad: Propiedad;
 clientesuscriber: Subscription;
 uid=false;
+uidAdmin='6BFdTQiiKTM8xpizUNgAGpstRN42';
+boton=true;
   constructor( public firebaseAuthService: FirebaseAuthService,
                public carritoService: CarritoService,
                public route: Router ) {
                 this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
                       if (res) {
                         this.uid=true;
+                        if (res.uid===this.uidAdmin) {
+                          this.boton=false;
+                        }
                       }
                     });
                }

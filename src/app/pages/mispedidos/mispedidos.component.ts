@@ -55,7 +55,7 @@ async getPedidosNuevos(){
 console.log('Nuevos');
 const uid= await this.firebaseAuthService.getUid();
   const path='Clientes/'+ uid+'/compras/';
-  this.nuevosSuscriber=this.fireStoreService.getCollectionQuery<Compra>(path,'estado','==','enviado').subscribe(res=>{
+  this.nuevosSuscriber=this.fireStoreService.getCollectionQuery<Compra>(path,'estado','==','visto').subscribe(res=>{
       if (res.length) {
         this.pedidos=res;
       }

@@ -39,15 +39,18 @@ export class PedidosComponent implements OnInit {
 
   async getPedidosNuevos(){
     console.log('Nuevos');
-      const path='pedidos';
+      const path='compras';
       let startAt=null;
+      console.log(this.pedidos.length);
       if (this.pedidos.length) {
         startAt=this.pedidos[this.pedidos.length -1].fecha;
       }
-      this.nuevosSuscriber=this.fireStoreService.getCollectionAlll<Compra>(path,'estado','==','enviado',startAt).subscribe(res=>{
-          if (res.length) {
-            res.forEach(pedido=>{
-              this.pedidos.push(pedido);
+
+      this.nuevosSuscriber=this.fireStoreService.getCollectionAlll<Compra>(path,'estado','==','visto',startAt).subscribe(res=>{
+        console.log(res);
+        if (res.length) {
+            res.forEach(compra=>{
+              this.pedidos.push(compra);
             });
           }
       });
@@ -56,7 +59,7 @@ export class PedidosComponent implements OnInit {
     }
     async getPedidosCulminados(){
       console.log('Entregados');
-        const path='pedidos';
+        const path='compras';
         const startAt=null;
         this.entrgadosSuscriber=this.fireStoreService.getCollectionAlll<Compra>(path,'estado','==','entregado',startAt).subscribe(res=>{
             if (res.length) {

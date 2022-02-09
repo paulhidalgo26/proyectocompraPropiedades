@@ -59,7 +59,7 @@ export class CarritoService {
       id: this.uid,
       cliente: this.cliente,
       productos: [],
-      estado: 'enviado',
+      estado: 'visto',
       fecha: new Date(),
     };
     this.propiedad$.next(this.propiedad);
@@ -118,6 +118,10 @@ addProductos(propiedad: Propiedad){
       if (item !==undefined) {
         this.propiedad.productos.splice(pocision, 1);
         console.log('app remove pedido ',this.propiedad);
+        const path='Clientes/' + this.uid +'/'+this.path;
+        this.fireStoreService.createDoc(this.propiedad,path,this.uid).then(()=>{
+          console.log('removido  con exito');
+        });
       }
   }
   }

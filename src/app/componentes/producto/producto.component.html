@@ -7,7 +7,7 @@
   <hr>
   <p class="precio text-start">Precio: ${{propiedad.precio}} </p>
   
-    <button>
+    <button *ngIf="boton">
       <ion-icon (click)="addCarrito();ngOnDestroy()" class="icon-producto"name="document-text-outline"></ion-icon>
     </button>
 </ion-card>
