@@ -53,7 +53,7 @@ export class SetProductosComponent implements OnInit, OnDestroy {
                 this.clientesuscriber= this.firebaseAuthService.stateAuth().subscribe(res=>{
                   console.log(res);
                   if (res !== null) {
-                    if (res.uid==='') {
+                    if (res.uid==='mf3LvbbKJBZgVrqQ4UVAwgwqKGb2') {
                       this.boton=true;
                       console.log(this.uid);
                         this.admin=true;

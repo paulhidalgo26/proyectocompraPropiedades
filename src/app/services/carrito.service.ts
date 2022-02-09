@@ -36,17 +36,9 @@ export class CarritoService {
                       this.uid=res.uid;
                       this.loadCliente();
                     }else{
-                    //   if (this.clientesuscriber) {
-                    //     this.clientesuscriber.unsubscribe();
-                    //  }
-                    //  if (this.cariitosuscriber) {
-                    //   this.cariitosuscriber.unsubscribe();
-                    //  }
                     }
                   });
-
    }
-
 
   loadCarrito(){
     const path ='Clientes/'+this.uid+'/'+'carrito';

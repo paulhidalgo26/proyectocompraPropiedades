@@ -28,6 +28,9 @@
 <ion-content>
   <div *ngFor="let producto of propiedad.productos">
     <app-itemcarrito [productoPedido]='producto'></app-itemcarrito>
+    <ion-button (click)="pedir()" expand="full" class="normal" style="color: white !important;">
+      Comprar
+    </ion-button>
   </div>
 </ion-content>
 

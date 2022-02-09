@@ -54,7 +54,7 @@ export class MispedidosComponent implements OnInit ,OnDestroy{
 async getPedidosNuevos(){
 console.log('Nuevos');
 const uid= await this.firebaseAuthService.getUid();
-  const path='Clientes/'+ uid+'/pedidos/';
+  const path='Clientes/'+ uid+'/compras/';
   this.nuevosSuscriber=this.fireStoreService.getCollectionQuery<Compra>(path,'estado','==','enviado').subscribe(res=>{
       if (res.length) {
         this.pedidos=res;
