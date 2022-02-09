@@ -234,6 +234,7 @@ async addDireccion(){
     lat:-2.898116,
     lng: -78.9995814999
   };
+  console.log('posicion por defecto', ubicacion);
   if (ubicacion !== null) {
     positioninput=ubicacion;
   }
@@ -242,7 +243,7 @@ async addDireccion(){
     component: GooglemapsComponent,
     mode: 'ios',
     swipeToClose:true,
-    componentProps: (positioninput)
+    componentProps: {posicion: positioninput}
   });
   await modalAdd.present();
   const {data}=await modalAdd.onWillDismiss();

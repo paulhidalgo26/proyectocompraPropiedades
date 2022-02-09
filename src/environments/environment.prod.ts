@@ -8,7 +8,7 @@ export const environment = {
   //   messagingSenderId: '13003420514',
   //   appId: '1:13003420514:web:26b50ee92efe3b9fdc723b'
   // }
-
+  apikey:'AIzaSyDNHcU45pFescHsNYfa62hSpKWGBQ8XJfU',
   firebaseConfig: {
     apiKey: 'AIzaSyCfIPLSH-9J5BELNoz6XSg6TDK4y9t5AiY',
     authDomain: 'proyectofinalcompraventas.firebaseapp.com',
